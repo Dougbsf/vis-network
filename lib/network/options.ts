@@ -200,6 +200,11 @@ const nodeOptions: OptionsConfig = {
     useImageSize: { boolean: bool },
     useBorderWithImage: { boolean: bool },
     coordinateOrigin: { string: ["center", "top-left"] },
+    customCoordinateOrigin: {
+      x: { number },
+      y: { number },
+      __type__: { object, boolean: bool, number },
+    },
     __type__: { object },
   },
   size: { number },
@@ -552,7 +557,6 @@ const allOptions: OptionsConfig = {
 /**
  * This provides ranges, initial values, steps and dropdown menu choices for the
  * configuration.
- *
  * @remarks
  * Checkbox: `boolean`
  *   The value supllied will be used as the initial value.
