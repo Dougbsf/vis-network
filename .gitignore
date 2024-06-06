@@ -31,14 +31,8 @@ coverage/
 /cypress/support/**/*.js
 /cypress/support/**/*.js.map
 /cypress/videos/
-/declarations/
-/dist/
-/esnext/
 /examples/examples.css
 /examples/index.html
 /examples/static/
 /examples/thumbnails/
-/peer/
-/standalone/
-/styles/
 vis-network-*.tgz
