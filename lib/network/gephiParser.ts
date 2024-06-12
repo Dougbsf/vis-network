@@ -42,6 +42,7 @@ export interface GephiEdge {
   attributes?: { title?: string };
   color?: string;
   label?: string;
+  customLabel?: string;
   type?: string;
 }
 
@@ -78,7 +79,6 @@ export interface VisEdge {
 
 /**
  * Convert Gephi to Vis.
- *
  * @param gephiJSON - The parsed JSON data in Gephi format.
  * @param optionsObj - Additional options.
  * @returns The converted data ready to be used in Vis.
@@ -120,8 +120,12 @@ export function parseGephi(
     if (gEdge.attributes != null) {
       vEdge.attributes = gEdge.attributes;
     }
-    if (gEdge.label != null) {
-      vEdge.label = gEdge.label;
+    if (gEdge.customLabel != null) {
+      vEdge.label = gEdge.customLabel;
+    } else {
+      if (gEdge.label != null) {
+        vEdge.label = gEdge.label;
+      }
     }
     if (gEdge.attributes != null && gEdge.attributes.title != null) {
       vEdge.title = gEdge.attributes.title;

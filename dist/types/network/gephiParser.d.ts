@@ -41,6 +41,7 @@ export interface GephiEdge {
   };
   color?: string;
   label?: string;
+  customLabel?: string;
   type?: string;
 }
 export interface VisData {
