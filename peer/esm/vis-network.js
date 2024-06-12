@@ -5,7 +5,7 @@
  * A dynamic, browser-based visualization library.
  *
  * @version 0.0.0-no-version
- * @date    2024-06-12T15:51:53.571Z
+ * @date    2024-06-12T21:49:17.305Z
  *
  * @copyright (c) 2011-2017 Almende B.V, http://almende.com
  * @copyright (c) 2017-2019 visjs contributors, https://github.com/visjs
@@ -26861,10 +26861,19 @@ var Edge = /*#__PURE__*/ (function () {
           }
 
           // Only copy label if it's a legal value.
-          if (isValidLabel(newOptions.label)) {
-            parentOptions.label = newOptions.label;
-          } else if (!isValidLabel(parentOptions.label)) {
-            parentOptions.label = undefined;
+
+          if (newOptions.customLabel) {
+            if (isValidLabel(newOptions.customLabel)) {
+              parentOptions.label = newOptions.customLabel;
+            } else if (!isValidLabel(parentOptions.customLabel)) {
+              parentOptions.label = undefined;
+            }
+          } else {
+            if (isValidLabel(newOptions.label)) {
+              parentOptions.label = newOptions.label;
+            } else if (!isValidLabel(parentOptions.label)) {
+              parentOptions.label = undefined;
+            }
           }
           mergeOptions(parentOptions, newOptions, "smooth", globalOptions);
           mergeOptions(parentOptions, newOptions, "shadow", globalOptions);
@@ -27328,9 +27337,8 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * Load edges by reading the data table
-       *
        * @param {Array | DataSet | DataView} edges    The data containing the edges.
-       * @param {boolean} [doNotEmit=false] - Suppress data changed event.
+       * @param {boolean} [doNotEmit] - Suppress data changed event.
        * @private
        */
     },
@@ -27384,9 +27392,8 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * Add edges
-       *
        * @param {number[] | string[]} ids
-       * @param {boolean} [doNotEmit=false]
+       * @param {boolean} [doNotEmit]
        * @private
        */
     },
@@ -27418,7 +27425,6 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * Update existing edges, or create them when not yet existing
-       *
        * @param {number[] | string[]} ids
        * @private
        */
@@ -27454,9 +27460,8 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * Remove existing edges. Non existing ids will be ignored
-       *
        * @param {number[] | string[]} ids
-       * @param {boolean} [emit=true]
+       * @param {boolean} [emit]
        * @private
        */
     },
@@ -27520,7 +27525,6 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * Reconnect all edges
-       *
        * @private
        */
     },
@@ -27581,7 +27585,6 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * Scan for missing nodes and remove corresponding edges, if any.
-       *
        * @private
        */
     },
@@ -27610,7 +27613,6 @@ var EdgesHandler = /*#__PURE__*/ (function () {
 
       /**
        * add all edges from dataset that are not in the cached state
-       *
        * @private
        */
     },
@@ -42053,12 +42055,28 @@ var ManipulationSystem = /*#__PURE__*/ (function () {
     {
       key: "_performEditEdge",
       value: function _performEditEdge(sourceNodeId, targetNodeId) {
-        var _this6 = this;
+        var _this$body$data$edges,
+          _this$body$data$edges2,
+          _this$body$data$edges3,
+          _this6 = this;
         var defaultData = {
           id: this.edgeBeingEditedId,
           from: sourceNodeId,
           to: targetNodeId,
-          label: this.body.data.edges.get(this.edgeBeingEditedId).label,
+          label:
+            (_this$body$data$edges =
+              (_this$body$data$edges2 = this.body.data.edges.get(
+                this.edgeBeingEditedId
+              )) === null || _this$body$data$edges2 === void 0
+                ? void 0
+                : _this$body$data$edges2.customLabel) !== null &&
+            _this$body$data$edges !== void 0
+              ? _this$body$data$edges
+              : (_this$body$data$edges3 = this.body.data.edges.get(
+                  this.edgeBeingEditedId
+                )) === null || _this$body$data$edges3 === void 0
+              ? void 0
+              : _this$body$data$edges3.label,
         };
         var eeFunct = this.options.editEdge;
         if (_typeof(eeFunct) === "object") {

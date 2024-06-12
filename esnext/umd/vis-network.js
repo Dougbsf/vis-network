@@ -5,7 +5,7 @@
  * A dynamic, browser-based visualization library.
  *
  * @version 0.0.0-no-version
- * @date    2024-06-12T15:51:53.571Z
+ * @date    2024-06-12T21:49:17.305Z
  *
  * @copyright (c) 2011-2017 Almende B.V, http://almende.com
  * @copyright (c) 2017-2019 visjs contributors, https://github.com/visjs
@@ -9761,10 +9761,19 @@
       }
 
       // Only copy label if it's a legal value.
-      if (isValidLabel(newOptions.label)) {
-        parentOptions.label = newOptions.label;
-      } else if (!isValidLabel(parentOptions.label)) {
-        parentOptions.label = undefined;
+
+      if (newOptions.customLabel) {
+        if (isValidLabel(newOptions.customLabel)) {
+          parentOptions.label = newOptions.customLabel;
+        } else if (!isValidLabel(parentOptions.customLabel)) {
+          parentOptions.label = undefined;
+        }
+      } else {
+        if (isValidLabel(newOptions.label)) {
+          parentOptions.label = newOptions.label;
+        } else if (!isValidLabel(parentOptions.label)) {
+          parentOptions.label = undefined;
+        }
       }
 
       esnext.mergeOptions(parentOptions, newOptions, "smooth", globalOptions);
@@ -10858,9 +10867,8 @@
 
     /**
      * Load edges by reading the data table
-     *
      * @param {Array | DataSet | DataView} edges    The data containing the edges.
-     * @param {boolean} [doNotEmit=false] - Suppress data changed event.
+     * @param {boolean} [doNotEmit] - Suppress data changed event.
      * @private
      */
     setData(edges, doNotEmit = false) {
@@ -10908,9 +10916,8 @@
 
     /**
      * Add edges
-     *
      * @param {number[] | string[]} ids
-     * @param {boolean} [doNotEmit=false]
+     * @param {boolean} [doNotEmit]
      * @private
      */
     add(ids, doNotEmit = false) {
@@ -10938,7 +10945,6 @@
 
     /**
      * Update existing edges, or create them when not yet existing
-     *
      * @param {number[] | string[]} ids
      * @private
      */
@@ -10972,9 +10978,8 @@
 
     /**
      * Remove existing edges. Non existing ids will be ignored
-     *
      * @param {number[] | string[]} ids
-     * @param {boolean} [emit=true]
+     * @param {boolean} [emit]
      * @private
      */
     remove(ids, emit = true) {
@@ -11025,7 +11030,6 @@
 
     /**
      * Reconnect all edges
-     *
      * @private
      */
     reconnectEdges() {
@@ -11079,7 +11083,6 @@
 
     /**
      * Scan for missing nodes and remove corresponding edges, if any.
-     *
      * @private
      */
     _removeInvalidEdges() {
@@ -11107,7 +11110,6 @@
 
     /**
      * add all edges from dataset that are not in the cached state
-     *
      * @private
      */
     _addMissingEdges() {
@@ -22468,7 +22470,9 @@
         id: this.edgeBeingEditedId,
         from: sourceNodeId,
         to: targetNodeId,
-        label: this.body.data.edges.get(this.edgeBeingEditedId).label,
+        label:
+          this.body.data.edges.get(this.edgeBeingEditedId)?.customLabel ??
+          this.body.data.edges.get(this.edgeBeingEditedId)?.label,
       };
       let eeFunct = this.options.editEdge;
       if (typeof eeFunct === "object") {
