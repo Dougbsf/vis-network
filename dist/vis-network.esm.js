@@ -5,7 +5,7 @@
  * A dynamic, browser-based visualization library.
  *
  * @version 0.0.0-no-version
- * @date    2024-06-12T15:36:38.678Z
+ * @date    2024-06-12T15:53:13.677Z
  *
  * @copyright (c) 2011-2017 Almende B.V, http://almende.com
  * @copyright (c) 2017-2019 visjs contributors, https://github.com/visjs
@@ -14965,7 +14965,6 @@ var dotparser = /*#__PURE__*/ Object.freeze({
 
 /**
  * Convert Gephi to Vis.
- *
  * @param gephiJSON - The parsed JSON data in Gephi format.
  * @param optionsObj - Additional options.
  * @returns The converted data ready to be used in Vis.
@@ -33903,6 +33902,9 @@ var EdgesHandler = /*#__PURE__*/ (function () {
     {
       key: "create",
       value: function create(properties) {
+        if (properties.customLabel) {
+          properties.label = properties.customLabel;
+        }
         return new Edge(
           properties,
           this.body,
