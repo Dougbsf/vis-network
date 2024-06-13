@@ -122,10 +122,9 @@ export function parseGephi(
     }
     if (gEdge.customLabel != null) {
       vEdge.label = gEdge.customLabel;
-    } else {
-      if (gEdge.label != null) {
-        vEdge.label = gEdge.label;
-      }
+    }
+    if (gEdge.label != null) {
+      vEdge.label = gEdge.label;
     }
     if (gEdge.attributes != null && gEdge.attributes.title != null) {
       vEdge.title = gEdge.attributes.title;

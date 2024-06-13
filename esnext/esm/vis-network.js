@@ -5,7 +5,7 @@
  * A dynamic, browser-based visualization library.
  *
  * @version 0.0.0-no-version
- * @date    2024-06-12T21:49:17.305Z
+ * @date    2024-06-13T15:50:07.542Z
  *
  * @copyright (c) 2011-2017 Almende B.V, http://almende.com
  * @copyright (c) 2017-2019 visjs contributors, https://github.com/visjs
@@ -1709,10 +1709,9 @@ function parseGephi(gephiJSON, optionsObj) {
     }
     if (gEdge.customLabel != null) {
       vEdge.label = gEdge.customLabel;
-    } else {
-      if (gEdge.label != null) {
-        vEdge.label = gEdge.label;
-      }
+    }
+    if (gEdge.label != null) {
+      vEdge.label = gEdge.label;
     }
     if (gEdge.attributes != null && gEdge.attributes.title != null) {
       vEdge.title = gEdge.attributes.title;
@@ -4335,7 +4334,7 @@ class Label {
       ctx,
       selected,
       hover,
-      this.elementOptions.label
+      this.elementOptions.customLabel ?? this.elementOptions.label
     );
 
     if (this.fontOptions.minWdt > 0 && state.width < this.fontOptions.minWdt) {
@@ -9551,7 +9550,6 @@ class Edge {
 
   /**
    * Set or overwrite options for the edge
-   *
    * @param {object} options  an object with options
    * @returns {undefined|boolean} undefined if no options, true if layout affecting data changed, false otherwise.
    */
@@ -9610,9 +9608,9 @@ class Edge {
    *
    * @param {object} parentOptions
    * @param {object} newOptions
-   * @param {boolean} [allowDeletion=false]
-   * @param {object} [globalOptions={}]
-   * @param {boolean} [copyFromGlobals=false]
+   * @param {boolean} [allowDeletion]
+   * @param {object} [globalOptions]
+   * @param {boolean} [copyFromGlobals]
    */
   static parseOptions(
     parentOptions,
@@ -9682,18 +9680,16 @@ class Edge {
 
     // Only copy label if it's a legal value.
 
-    if (newOptions.customLabel) {
-      if (isValidLabel(newOptions.customLabel)) {
-        parentOptions.label = newOptions.customLabel;
-      } else if (!isValidLabel(parentOptions.customLabel)) {
-        parentOptions.label = undefined;
-      }
-    } else {
-      if (isValidLabel(newOptions.label)) {
-        parentOptions.label = newOptions.label;
-      } else if (!isValidLabel(parentOptions.label)) {
-        parentOptions.label = undefined;
-      }
+    if (isValidLabel(newOptions.customLabel)) {
+      parentOptions.customLabel = newOptions.customLabel;
+    } else if (!isValidLabel(parentOptions.customLabel)) {
+      parentOptions.customLabel = undefined;
+    }
+
+    if (isValidLabel(newOptions.label)) {
+      parentOptions.label = newOptions.label;
+    } else if (!isValidLabel(parentOptions.label)) {
+      parentOptions.label = undefined;
     }
 
     mergeOptions(parentOptions, newOptions, "smooth", globalOptions);
@@ -9938,7 +9934,6 @@ class Edge {
 
   /**
    * update the options in the label module
-   *
    * @param {object} options
    */
   updateLabelModule(options) {
@@ -9958,7 +9953,6 @@ class Edge {
 
   /**
    * update the edge type, set the options
-   *
    * @returns {boolean}
    */
   updateEdgeType() {
@@ -10064,7 +10058,6 @@ class Edge {
 
   /**
    * get the title of this edge.
-   *
    * @returns {string} title    The title of the edge, or undefined when no title
    *                           has been set.
    */
@@ -10074,7 +10067,6 @@ class Edge {
 
   /**
    * check if this node is selecte
-   *
    * @returns {boolean} selected   True if node is selected, else false
    */
   isSelected() {
@@ -10083,7 +10075,6 @@ class Edge {
 
   /**
    * Retrieve the value of the edge. Can be undefined
-   *
    * @returns {number} value
    */
   getValue() {
@@ -10093,7 +10084,6 @@ class Edge {
   /**
    * Adjust the value range of the edge. The edge will adjust it's width
    * based on its value.
-   *
    * @param {number} min
    * @param {number} max
    * @param {number} total
@@ -10147,7 +10137,6 @@ class Edge {
    * Redraw a edge
    * Draw this edge in the given canvas
    * The 2d context of a HTML canvas can be retrieved by canvas.getContext("2d");
-   *
    * @param {CanvasRenderingContext2D}   ctx
    */
   draw(ctx) {
@@ -10168,7 +10157,6 @@ class Edge {
    * Redraw arrows
    * Draw this arrows in the given canvas
    * The 2d context of a HTML canvas can be retrieved by canvas.getContext("2d");
-   *
    * @param {CanvasRenderingContext2D}   ctx
    */
   drawArrows(ctx) {
@@ -10347,7 +10335,6 @@ class Edge {
   /**
    * Determine all visual elements of this edge instance, in which the given
    * point falls within the bounding shape.
-   *
    * @param {point} point
    * @returns {Array.<edgeClickItem|edgeLabelClickItem>} list with the items which are on the point
    */
@@ -10375,7 +10362,6 @@ class Edge {
 
   /**
    * Check if this object is overlapping with the provided object
-   *
    * @param {object} obj   an object with parameters left, top
    * @returns {boolean}     True if location is located on the edge
    */
@@ -10406,7 +10392,6 @@ class Edge {
 
   /**
    * Determine the rotation point, if any.
-   *
    * @param {CanvasRenderingContext2D} [ctx] if passed, do a recalculation of the label size
    * @returns {rotationPoint} the point to rotate around and the angle in radians to rotate
    * @private
@@ -10454,7 +10439,6 @@ class Edge {
 
   /**
    * Get a point on a circle
-   *
    * @param {number} x
    * @param {number} y
    * @param {number} radius
@@ -10485,7 +10469,6 @@ class Edge {
 
   /**
    * cleans all required things on delete
-   *
    * @returns {*}
    */
   cleanup() {
@@ -10503,7 +10486,6 @@ class Edge {
 
   /**
    * Check if both connecting nodes exist
-   *
    * @returns {boolean}
    */
   endPointsValid() {
@@ -10907,9 +10889,6 @@ class EdgesHandler {
    * @returns {Edge}
    */
   create(properties) {
-    if (properties.customLabel) {
-      properties.label = properties.customLabel;
-    }
     return new Edge(
       properties,
       this.body,
@@ -20857,7 +20836,6 @@ class LayoutEngine {
 
 /**
  * Clears the toolbar div element of children
- *
  * @private
  */
 class ManipulationSystem {
@@ -20921,7 +20899,6 @@ class ManipulationSystem {
 
   /**
    * If something changes in the data during editing, switch back to the initial datamanipulation state and close all edit modes.
-   *
    * @private
    */
   _restore() {
@@ -20936,7 +20913,6 @@ class ManipulationSystem {
 
   /**
    * Set the Options
-   *
    * @param {object} options
    * @param {object} allOptions
    * @param {object} globalOptions
@@ -20971,7 +20947,6 @@ class ManipulationSystem {
 
   /**
    * Enable or disable edit-mode. Draws the DOM required and cleans up after itself.
-   *
    * @private
    */
   toggleEditMode() {
@@ -21014,7 +20989,6 @@ class ManipulationSystem {
 
   /**
    * Creates the main toolbar. Removes functions bound to the select event. Binds all the buttons of the toolbar.
-   *
    * @private
    */
   showManipulatorToolbar() {
@@ -21381,7 +21355,6 @@ class ManipulationSystem {
 
   /**
    * draw or remove the DOM
-   *
    * @private
    */
   _setup() {
@@ -21405,7 +21378,6 @@ class ManipulationSystem {
 
   /**
    * create the div overlays that contain the DOM
-   *
    * @private
    */
   _createWrappers() {
@@ -21449,7 +21421,6 @@ class ManipulationSystem {
 
   /**
    * generate a new target node. Used for creating new edges and editing edges
-   *
    * @param {number} x
    * @param {number} y
    * @returns {Node}
@@ -21499,7 +21470,6 @@ class ManipulationSystem {
 
   /**
    * this function cleans up after everything this module does. Temporary elements, functions and events are removed, physics restored, hammers removed.
-   *
    * @private
    */
   _clean() {
@@ -21530,7 +21500,6 @@ class ManipulationSystem {
 
   /**
    * Each dom element has it's own hammer. They are stored in this.manipulationHammers. This cleans them up.
-   *
    * @private
    */
   _cleanupDOMEventListeners() {
@@ -21542,7 +21511,6 @@ class ManipulationSystem {
 
   /**
    * Remove all DOM elements created by this module.
-   *
    * @private
    */
   _removeManipulationDOM() {
@@ -21573,8 +21541,7 @@ class ManipulationSystem {
 
   /**
    * create a seperator line. the index is to differentiate in the manipulation dom
-   *
-   * @param {number} [index=1]
+   * @param {number} [index]
    * @private
    */
   _createSeperator(index = 1) {
@@ -21722,7 +21689,6 @@ class ManipulationSystem {
 
   /**
    * this binds an event until cleanup by the clean functions.
-   *
    * @param {Event}  event   The event
    * @param {Function} newFunction
    * @private
@@ -21737,7 +21703,6 @@ class ManipulationSystem {
 
   /**
    * this overrides an UI function until cleanup by the clean function
-   *
    * @param {string} UIfunctionName
    * @param {Function} newFunction
    * @private
@@ -21759,7 +21724,6 @@ class ManipulationSystem {
 
   /**
    * Restore the overridden UI functions to their original state.
-   *
    * @private
    */
   _unbindTemporaryUIs() {
@@ -21780,7 +21744,6 @@ class ManipulationSystem {
 
   /**
    * Unbind the events created by _temporaryBindEvent
-   *
    * @private
    */
   _unbindTemporaryEvents() {
@@ -21794,7 +21757,6 @@ class ManipulationSystem {
 
   /**
    * Bind an hammer instance to a DOM element.
-   *
    * @param {Element} domElement
    * @param {Function} boundFunction
    */
@@ -21820,7 +21782,6 @@ class ManipulationSystem {
 
   /**
    * Neatly clean up temporary edges and nodes
-   *
    * @private
    */
   _cleanupTemporaryNodesAndEdges() {
@@ -21854,7 +21815,6 @@ class ManipulationSystem {
 
   /**
    * the touch is used to get the position of the initial click
-   *
    * @param {Event}  event   The event
    * @private
    */
@@ -21866,7 +21826,6 @@ class ManipulationSystem {
 
   /**
    * the drag start is used to mark one of the control nodes as selected.
-   *
    * @private
    */
   _controlNodeDragStart() {
@@ -21898,7 +21857,6 @@ class ManipulationSystem {
 
   /**
    * dragging the control nodes or the canvas
-   *
    * @param {Event}  event   The event
    * @private
    */
@@ -21917,7 +21875,6 @@ class ManipulationSystem {
 
   /**
    * connecting or restoring the control nodes.
-   *
    * @param {Event}  event   The event
    * @private
    */
@@ -21970,7 +21927,6 @@ class ManipulationSystem {
   /**
    * the function bound to the selection event. It checks if you want to connect a cluster and changes the description
    * to walk the user through the process.
-   *
    * @param {Event} event
    * @private
    */
@@ -22070,7 +22026,6 @@ class ManipulationSystem {
 
   /**
    * Connect the new edge to the target if one exists, otherwise remove temp line
-   *
    * @param {Event}  event   The event
    * @private
    */
@@ -22149,7 +22104,6 @@ class ManipulationSystem {
 
   /**
    * Adds a node on the specified location
-   *
    * @param {object} clickData
    * @private
    */
@@ -22188,7 +22142,6 @@ class ManipulationSystem {
 
   /**
    * connect two nodes with a new edge.
-   *
    * @param {Node.id} sourceNodeId
    * @param {Node.id} targetNodeId
    * @private
@@ -22223,7 +22176,6 @@ class ManipulationSystem {
 
   /**
    * connect two nodes with a new edge.
-   *
    * @param {Node.id} sourceNodeId
    * @param {Node.id} targetNodeId
    * @private
@@ -22233,9 +22185,9 @@ class ManipulationSystem {
       id: this.edgeBeingEditedId,
       from: sourceNodeId,
       to: targetNodeId,
-      label:
-        this.body.data.edges.get(this.edgeBeingEditedId)?.customLabel ??
-        this.body.data.edges.get(this.edgeBeingEditedId)?.label,
+      label: this.body.data.edges.get(this.edgeBeingEditedId)?.label,
+      customLabel: this.body.data.edges.get(this.edgeBeingEditedId)
+        ?.customLabel,
     };
     let eeFunct = this.options.editEdge;
     if (typeof eeFunct === "object") {
