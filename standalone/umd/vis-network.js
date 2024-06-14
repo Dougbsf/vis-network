@@ -5,7 +5,7 @@
  * A dynamic, browser-based visualization library.
  *
  * @version 0.0.0-no-version
- * @date    2024-06-13T15:50:07.542Z
+ * @date    2024-06-14T20:56:32.814Z
  *
  * @copyright (c) 2011-2017 Almende B.V, http://almende.com
  * @copyright (c) 2017-2019 visjs contributors, https://github.com/visjs
@@ -23322,7 +23322,6 @@
 
   /**
    * List of special styles for multi-fonts
-   *
    * @private
    */
   var multiFontStyle = ["bold", "ital", "boldital", "mono"];
@@ -23334,7 +23333,7 @@
     /**
      * @param {object} body
      * @param {object} options
-     * @param {boolean} [edgelabel=false]
+     * @param {boolean} [edgelabel]
      */
     function Label(body, options) {
       var edgelabel =
@@ -23393,7 +23392,6 @@
            *
            * Member fontOptions serves as an accumulator for the current font options.
            * As such, it needs to be completely separated from the node options.
-           *
            * @param {object} newFontOptions the new font options to process
            * @private
            */
@@ -23431,7 +23429,6 @@
            *
            * Note that following is not done here and have to be done after the call:
            * - Not all font options are set (vadjust, mod)
-           *
            * @param {object} outOptions  out-parameter, object in which to store the parse results (if any)
            * @param {object} inOptions  font options to parse
            * @returns {boolean} true if font parsed as string, false otherwise
@@ -23443,7 +23440,6 @@
           value:
             /**
              * Set the width and height constraints based on 'nearest' value
-             *
              * @param {Array} pile array of option objects to consider
              * @returns {object} the actual constraint values to use
              * @private
@@ -23509,7 +23505,6 @@
 
           /**
            * Set options and update internal state
-           *
            * @param {object} options  options to set
            * @param {Array}  pile     array of option objects to consider for option 'chosen'
            */
@@ -23526,7 +23521,6 @@
           /**
            * When margins are set in an element, adjust sizes is called to remove them
            * from the width/height constraints. This must be done prior to label sizing.
-           *
            * @param {{top: number, right: number, bottom: number, left: number}} margins
            */
         },
@@ -23551,7 +23545,6 @@
 
           /**
            * Add the font members of the passed list of option objects to the pile.
-           *
            * @param {Pile} dstPile  pile of option objects add to
            * @param {Pile} srcPile  pile of option objects to take font options from
            * @private
@@ -23568,7 +23561,6 @@
           /**
            * Add given font option object to the list of objects (the 'pile') to consider for determining
            * multi-font option values.
-           *
            * @param {Pile} pile  pile of option objects to use
            * @param {object} options  instance to add to pile
            * @private
@@ -23585,7 +23577,6 @@
 
           /**
            * Collect all own-property values from the font pile that aren't multi-font option objectss.
-           *
            * @param {Pile} pile  pile of option objects to use
            * @returns {object} object with all current own basic font properties
            * @private
@@ -23641,11 +23632,10 @@
            *
            * 'bold' used as example:
            *
-           *   - search in option group 'bold' in local properties
-           *   - search in main font option group in local properties
+           * - search in option group 'bold' in local properties
+           * - search in main font option group in local properties
            *
            * ---------------------------------------------------------------------
-           *
            * @param {Pile} pile  pile of option objects to use
            * @param {MultiFontStyle} multiName sub path for the multi-font
            * @param {string} option  the option to search for, for the given multi-font
@@ -23697,7 +23687,6 @@
            * Return all options values for the given multi-font.
            *
            * All available option objects are trawled in the set order to construct the option values.
-           *
            * @param {Pile} pile  pile of option objects to use
            * @param {MultiFontStyle} multiName sub path for the mod-font
            * @returns {MultiFontOptions}
@@ -23724,7 +23713,6 @@
           /**
            * Collapse the font options for the multi-font to single objects, from
            * the chain of option objects passed (the 'pile').
-           *
            * @param {Pile} pile  sequence of option objects to consider.
            *                     First item in list assumed to be the newly set options.
            */
@@ -23759,13 +23747,12 @@
 
           /**
            * Main function. This is called from anything that wants to draw a label.
-           *
            * @param {CanvasRenderingContext2D} ctx
            * @param {number} x
            * @param {number} y
            * @param {boolean} selected
            * @param {boolean} hover
-           * @param {string} [baseline='middle']
+           * @param {string} [baseline]
            */
         },
         {
@@ -23802,7 +23789,6 @@
 
           /**
            * Draws the label background
-           *
            * @param {CanvasRenderingContext2D} ctx
            * @private
            */
@@ -23825,7 +23811,7 @@
            * @param {CanvasRenderingContext2D} ctx
            * @param {number} x
            * @param {number} y
-           * @param {string} [baseline='middle']
+           * @param {string} [baseline]
            * @param {number} viewFontSize
            * @private
            */
@@ -23935,7 +23921,6 @@
           /**
            * fade in when relative scale is between threshold and threshold - 1.
            * If the relative scale would be smaller than threshold -1 the draw function would have returned before coming here.
-           *
            * @param {string} color  The font color to use
            * @param {number} viewFontSize
            * @param {string} initialStrokeColor
@@ -23995,7 +23980,6 @@
 
           /**
            * Get the current dimensions of the label
-           *
            * @returns {rect}
            */
         },
@@ -24037,9 +24021,9 @@
            * @param {CanvasRenderingContext2D} ctx
            * @param {boolean} selected
            * @param {boolean} hover
-           * @param {number} [x=0]
-           * @param {number} [y=0]
-           * @param {'middle'|'hanging'} [baseline='middle']
+           * @param {number} [x]
+           * @param {number} [y]
+           * @param {'middle'|'hanging'} [baseline]
            */
         },
         {
@@ -24148,7 +24132,6 @@
 
           /**
            * This explodes the passed text into lines and determines the width, height and number of lines.
-           *
            * @param {CanvasRenderingContext2D} ctx
            * @param {boolean} selected
            * @param {boolean} hover
@@ -24166,7 +24149,6 @@
 
           /**
            * This explodes the label string into lines and sets the width, height and number of lines.
-           *
            * @param {CanvasRenderingContext2D} ctx
            * @param {boolean} selected
            * @param {boolean} hover
@@ -24215,7 +24197,6 @@
 
           /**
            * Check if this label is visible
-           *
            * @returns {boolean} true if this label will be show, false otherwise
            */
         },
@@ -38008,16 +37989,6 @@
                 this._drawEdges(ctx);
               }
             }
-            if (
-              this.dragging === false ||
-              (this.dragging === true && this.options.hideNodesOnDrag === false)
-            ) {
-              var _this$_drawNodes = this._drawNodes(ctx, hidden),
-                drawExternalLabels = _this$_drawNodes.drawExternalLabels;
-              drawLater.drawExternalLabels = drawExternalLabels;
-            }
-
-            // draw the arrows last so they will be at the top
             if (hidden === false) {
               if (
                 (this.dragging === false ||
@@ -38029,6 +38000,14 @@
               ) {
                 this._drawArrows(ctx);
               }
+            }
+            if (
+              this.dragging === false ||
+              (this.dragging === true && this.options.hideNodesOnDrag === false)
+            ) {
+              var _this$_drawNodes = this._drawNodes(ctx, hidden),
+                drawExternalLabels = _this$_drawNodes.drawExternalLabels;
+              drawLater.drawExternalLabels = drawExternalLabels;
             }
             if (drawLater.drawExternalLabels != null) {
               drawLater.drawExternalLabels();
